@@ -1,0 +1,28 @@
+body {
+    background-color: rgb(161, 155, 146);
+    color: rgb(24, 22, 21);
+    text-align: center;
+}
+ul li {
+    color: white;
+    background-color: teal;
+}
+.img-test {
+    border-radius: 50%;
+}
+
+.images {
+    display: flex;
+    flex-direction: row
+
+}
+button {
+    background-color: rgb(59, 221, 221);
+    border-radius:10px;
+}
+
+img {
+    width: 250px;
+    border: 1px solid black;
+    margin-right: 10px;
+}
