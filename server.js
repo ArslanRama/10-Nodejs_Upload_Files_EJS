@@ -1,7 +1,6 @@
 
 const express = require('express')
 const app = express()
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 
 
@@ -12,19 +11,28 @@ require('dotenv/config');
 
 // Step 2 - connect to the database
 
-mongoose.connect(process.env.MONGO_URL,
-    { useNewUrlParser: true, useUnifiedTopology: true }, err => {
-        console.log('connected')
-    });
+const PORT = process.env.PORT || 8000;
+
+//! database name and url
+const DB_NAME = process.env.DB_NAME
+const DB_URL = process.env.MongoDB_Link + DB_NAME
+mongoose.connect(DB_URL, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+})
+    .then(() => console.log('MongoDB database is successfully connected'))
+    .catch(() => console.log('Database connection failed!'))
 
 // Step 3 - code was added to User.js in Models. 
 
 // Step 4 - set up EJS
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
 // Set EJS as templating engine
+//! Settings
+app.use(express.static(__dirname + '/public'))
 app.set("view engine", "ejs");
 
 // Step 5 - set up multer for storing uploaded files
@@ -63,7 +71,7 @@ app.get('/', (req, res) => {
 // Step 8 - the POST handler for processing the uploaded file
  
 app.post('/', upload.single('image'), (req, res, next) => {
- 
+    console.log('data coming from: ', req.file)
     const obj = {
         name: req.body.name,
         desc: req.body.desc,
@@ -84,10 +92,8 @@ app.post('/', upload.single('image'), (req, res, next) => {
 });
 
 // Step 9 - configure the server's port
- 
-const port = process.env.PORT || '3000'
-app.listen(port, err => {
-    if (err)
-        throw err
-    console.log('Server listening on port', port)
+
+//! listen app with port
+app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`)
 })
